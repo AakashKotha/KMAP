@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-// #include <matrix.h>
+#include <matrix.h>
 
 /*----------------------------------------------------------------------------*/
 /*                              Kinetic Modeling                              */
@@ -34,33 +34,9 @@ void kconv_exp(double k1, double k2, double *u, int num_time, double td, double 
 void kconv_2t5p_tac(double *p, double dk, double *scant, double td, double *cp, 
                     double *wb, int num_frm, int num_vox, double *ct);
 //------------------------------------------------------------------------------
-void kconv_2t5p_MCD(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct, double *cf, double *cb);
-//------------------------------------------------------------------------------
 void kconv_2t5p_jac(double *p, double dk, double *scant, double td, double *cp, 
                     double *wb, int num_frm, int num_vox, double *ct, int *psens, 
                     double *st);      				
-//------------------------------------------------------------------------------
-void kconv_2t5pv_tac(double *p, double dk, double *scant, double td, double *cp, 
-                     double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------
-void kconv_2t5pv_jac(double *p, double dk, double *scant, double td, double *cp, 
-                     double *wb, int num_frm, int num_vox, double *ct, int *psens, 
-                     double *st); 
-//------------------------------------------------------------------------------
-void kconv_2t5pk_tac(double *p, double dk, double *scant, double td, double *cp, 
-                     double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------
-void kconv_2t5pk_jac(double *p, double dk, double *scant, double td, double *cp, 
-                     double *wb, int num_frm, int num_vox, double *ct, int *psens, 
-                     double *st); 
-//------------------------------------------------------------------------------
-void kconv_2t6p_tac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------
-void kconv_2t6p_jac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct, int *psens, 
-                    double *st); 
 //------------------------------------------------------------------------------
 void kconv_srtm_tac(double *p, double dk, double *scant, double td, double *cr0, 
                     double *wb, int num_frm, int num_vox, double *ct);
@@ -76,21 +52,7 @@ void kconv_1t3p_jac(double *p, double dk, double *scant, double td, double *cp,
                     double *wb, int num_frm, int num_vox, double *ct, int *psens, 
                     double *st);
 //------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-void kconv_1t3p1_tac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------
-void kconv_1t3p1_jac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct, int *psens, 
-                    double *st);
-//------------------------------------------------------------------------------
-void kconv_1t4p_tac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------
-void kconv_1t4p_jac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct, int *psens, 
-                    double *st);
-//------------------------------------------------------------------------------
+
 
 /*----------------------------------------------------------------------------*/
 /*                         Optimization   Algorithm                           */
@@ -116,17 +78,6 @@ void lema_gsn(double *w, double *y, double *f, int num_y, double *p, int num_p,
               void *param, void (*func)(double *, void *, double *),
               void (*jacf)(double *, void *, double *, int *, double *),
               double *plb, double *pub, int *psens, int maxit);
-//------------------------------------------------------------------------------
-void lema_psn(double *w, double *y, double *f, int num_y, double *p, int num_p, 
-              void *param, void (*func)(double *, void *, double *),
-              void (*jacf)(double *, void *, double *, int *, double *),
-              double *plb, double *pub, int *psens, int maxit);
-//------------------------------------------------------------------------------
-void lema_png(double *w, double *y, double *f, double *wg, double *yg, int num_y, 
-              double *p, int num_p, 
-              void *param, void (*func)(double *, void *, double *),
-              void (*jacf)(double *, void *, double *, int *, double *),
-              double *plb, double *pub, int *psens, int maxit);
 //------------------------------------------------------------------------------             
 void BoundQuadCD(double *g, double *H, double *x, int num_par, double mu, 
                  int maxit, double *xmin, double *xmax);
@@ -134,25 +85,8 @@ void BoundQuadCD(double *g, double *H, double *x, int num_par, double mu,
 //------------------------------------------------------------------------------
 void kconv_liver_tac(double *p, double dk, double *scant, double td, double *ca, 
                     double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------  
-void kconv_liver_mcd(double *p, double dk, double *scant, double td, double *ca, 
-                    double *wb, int num_frm, int num_vox, double *ct, double *cf, double *cb);
 //------------------------------------------------------------------------------      
 void kconv_liver_jac(double *p, double dk, double *scant, double td, double *ca, 
                     double *wb, int num_frm, int num_vox, double *ct, int *psens, 
                     double *st);
-//------------------------------------------------------------------------------    
-void kconv_dbif_tac(double *p, double dk, double *scant, double td, double *ca, 
-                    double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------   
-void kconv_dbif_jac(double *p, double dk, double *scant, double td, double *ca, 
-                    double *wb, int num_frm, int num_vox, double *ct, int *psens, 
-                    double *st);
-//------------------------------------------------------------------------------
-void kconv_2tss_tac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct);
-//------------------------------------------------------------------------------
-void kconv_2tss_jac(double *p, double dk, double *scant, double td, double *cp, 
-                    double *wb, int num_frm, int num_vox, double *ct, int *psens, 
-                    double *st);    
 //------------------------------------------------------------------------------

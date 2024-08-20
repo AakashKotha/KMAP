@@ -788,6 +788,218 @@ double vecnormw(double *w, double *x, int num)
 }
 
 
+//------------------------------------------------------------------------------
+void BoundQuadCD(double *g, double *H, double *x, int num_par, double mu, 
+                 int maxit, double *xmin, double *xmax)
+//------------------------------------------------------------------------------
+//	The coordinate descent algorithm for solving the quadratic minimization 
+//	problem subject to box bounds: x = argmin g'(x-xn)+1/2(x-xn)'H(x-xn); 
+{
+   int      i, j, it, found;; 
+   double   xn2, err, dj, xj;
+   double   hes, tmp;
+   double   etol = 1.0e-9;   
+   
+	found = 0;
+   it = 0; 
+   while ( (found==0) & (it<maxit) ) {
+		
+      xn2 = vecnorm2(x, num_par);
+      err = 0.0;
+      for (j=0; j<num_par; j++) {
+			
+			// estimate
+			tmp = mu; //mu*H[j+j*num_par];  // NOTE: tmp=mu works better for direct reconstruction
+			hes = H[j+j*num_par] + tmp;
+			if (fabs(hes)>0.0)
+			   dj = g[j] / hes;
+			else
+			   dj = 0.0;
+			xj = x[j] - dj;
+			
+         // bounded estimates
+         if (xj<xmin[j])
+            xj = xmin[j];
+         else if (xj>xmax[j])
+            xj = xmax[j];
+			dj = xj - x[j];
+         x[j] = xj;
+         
+         // gradient update
+         for (i=0; i<num_par; i++)
+            g[i] += H[i+j*num_par] * dj;         
+         g[j] += tmp * dj; 
+            
+         // update the difference
+         err += dj*dj;
+         
+      }
+      ++it;
+      // check convergence
+      if ( sqrt(err) <= etol*(xn2+etol) )
+         found = 1;    
+   }
+
+}
+
+
+
+//------------------------------------------------------------------------------
+void lema_gsn(double *w, double *y, double *f, int num_y, double *p, int num_p, 
+              void *param, void (*func)(double *, void *, double *),
+              void (*jacf)(double *, void *, double *, int *, double *),
+              double *plb, double *pub, int *psens, int maxit)
+//------------------------------------------------------------------------------
+// The Levenberg-Marquardt algorithm to minimize the least squares problem
+// subject to linear bounds.
+{
+   int      i, j, k, it, n;
+   double   mu, v, tau, rho, maxh;
+   int      num_par;
+   double   *pnew, *pest, *pdif, *plb_sens, *pub_sens;
+   double   *J, *g, *H, *gnew;
+   double   etol = 1e-9;
+   double   F, Fnew, L;
+   int      subit = 100;
+   double   tmp, h1, h2;
+	
+   // determine the number of sensitive parameters
+   num_par = 0;
+   for (j=0; j<num_p; j++)
+      if (psens[j]==1) ++num_par;
+  
+   // collect memory space
+   pdif = (double*) malloc(sizeof(double)*num_par);
+   pnew = (double*) malloc(sizeof(double)*num_par);
+   pest = (double*) malloc(sizeof(double)*num_par);
+   plb_sens = (double*) malloc(sizeof(double)*num_par);
+   pub_sens = (double*) malloc(sizeof(double)*num_par);
+   J = (double*) malloc(sizeof(double)*num_y*num_par);
+   g = (double*) malloc(sizeof(double)*num_par);
+   H = (double*) malloc(sizeof(double)*num_par*num_par);
+   gnew = (double*) malloc(sizeof(double)*num_par);
+   
+   // initialize the parameter estimates
+   getkin(p, psens, num_par, pest);
+   getkin(plb, psens, num_par, plb_sens);
+   getkin(pub, psens, num_par, pub_sens);
+   (*jacf)(p, param, f, psens, J);
+
+   // the cost function value F
+   F = 0.0;
+   for (i=0; i<num_y; i++)
+      F += w[i] * ( y[i] - f[i] ) * ( y[i] - f[i] ) * 0.5;
+  
+   // initialize the searching parameters v, tau, mu
+   v = 2.0;
+   tau = 1.0e-3;
+   maxh = 0;
+   for (j=0; j<num_par; j++) {
+      tmp = vecnorm2(J+num_y*j, num_y);
+      tmp *= tmp;
+      if (maxh<tmp) maxh = tmp;
+   }
+   mu = tau * maxh;
+
+   // iterative loop
+   it = 0; n = 0;
+   rho = 1.0;
+   while (it<maxit) {
+      
+      // calculate gradient and approximate Hessian
+      if (rho>0.0)
+         for (j=0; j<num_par; j++) {
+            g[j] = 0.0;
+            for (i=0; i<num_y; i++) {
+               h1 = w[i] * (f[i]-y[i]);
+               g[j] +=  h1 * J[i+j*num_y];
+            }
+            for (k=0; k<num_par; k++) {
+               H[j+k*num_par] = 0.0;
+               for (i=0; i<num_y; i++) {
+                  h2 = w[i];
+                  H[j+k*num_par] += h2 * J[i+j*num_y] * J[i+k*num_y];
+               }
+            }
+         }
+      
+      // estimate the parameters
+      for (j=0; j<num_par; j++) {
+         pnew[j] = pest[j];
+         gnew[j] = g[j];
+      }    
+      BoundQuadCD(gnew, H, pnew, num_par, mu, subit, plb_sens, pub_sens);
+      for (i=0; i<num_par;i++)
+         pdif[i] = pnew[i] - pest[i];
+      L = 0.0;
+      for (j=0; j<num_par; j++) {
+         L += g[j] * pdif[j];
+         for (i=0; i<num_par; i++)
+            L += H[j+i*num_par]*pdif[j]*pdif[i]*0.5;
+      }
+  
+		if (vecnorm2(pdif,num_par)<=etol*(vecnorm2(pest,num_par)+etol)) break;     
+                  
+      // calculate the ratio rho
+      setkin(pnew, num_par, psens, p);
+      (*func)(p, param, f);
+      Fnew = 0.0;
+      for (i=0; i<num_y; i++)
+         Fnew += w[i] * ( y[i] - f[i] ) * ( y[i] - f[i] ) * 0.5;;
+      rho = (Fnew-F) / L;
+      //printf("it=%d, n=%d, rho=%1.2f, mu=%5.2f, F=%5.2f, Fnew=%5.2f, Lnew=%5.2f \n", it, n, rho, mu, F, Fnew, L+F);
+      //for (j=0; j<num_par; j++)
+      //   printf("%2.4f  ",pest[j]);
+      //printf("\n");
+      //for (j=0; j<num_par; j++)
+      //   printf("%2.4f  ",pnew[j]);
+      //printf("\n");
+      
+      // update mu (and parameter estimates)
+      if ( rho > 0 ) {  // if accept, update the estimates      
+                     
+         for (j=0; j<num_par; j++)
+            pest[j] = pnew[j];
+         (*jacf)(p, param, f, psens, J);
+         F = Fnew;
+         ++it;         
+         
+         tmp = 2*rho-1;
+         tmp = 1-tmp*tmp*tmp;
+         if (tmp<1.0/3.0)   // NOTE[must be 1.0/3.0, 1/3 doesn't work.]
+            tmp = 1.0/3.0;				
+         mu *= tmp;
+         v = 2.0;
+         
+      } else {  // otherwise, find a new step
+      
+         mu *= v;
+         v *= 2.0;
+      }
+	  
+	   ++n;
+      if (n>1000) {
+         printf("stopped: maximum iteration number exceeds 1000!\n");
+         setkin(pest, num_par, psens, p);
+         (*func)(p, param, f);
+         break;
+      }
+      
+   }
+	
+   free(pdif);
+   free(pnew);
+   free(pest);
+   free(plb_sens);
+   free(pub_sens);
+   free(J);
+   free(g);
+   free(H);
+   free(gnew);
+	
+}
+
+
 
 //------------------------------------------------------------------------------
 void kconv_liver_tac(double *p, double dk, double *scant, double td, double *ca, 
