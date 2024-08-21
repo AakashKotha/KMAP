@@ -68,11 +68,20 @@ The KMAP (Kinetic Modeling Analysis Package) library provides a suite of tools f
 ### 3. **MEX Files for each of the models**
 
 
+
 ## MEX Files
 
 This directory contains several MEX files for performing kinetic modeling in MATLAB. Precompiled MEX binaries (`*.mexa64` files) are also included and can be used directly in MATLAB without recompilation, provided they are compatible with your system architecture.
 
 Each MEX file is accompanied by detailed instructions on its usage, input, output, and compilation. Please refer to the comments within each MEX source file (`*.cpp`) for precise information on how to work with these files.
+
+### Compilation Instruction:
+
+The compilation command should be run in the MATLAB Command Window or a terminal/shell where you have access to the MATLAB mex compiler. This command compiles the C++ source code into a MEX file that can be executed within MATLAB.
+
+### Usage:
+
+The usage command should be run within the MATLAB environment after the MEX file has been successfully compiled. It executes the compiled MEX function with the specified input arguments.
 
 ### MEX Files Overview
 
