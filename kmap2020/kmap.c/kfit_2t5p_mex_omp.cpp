@@ -11,7 +11,7 @@
 // kfit_2t5p_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
 //
 // Compilation Instruction:
-// mex kfit_2t5p_mex_omp.cpp kinlib.cpp kfit_test_omp.cpp 
+// mex kfit_2t5p_mex_omp.cpp kinlib.cpp 
 // CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
 //
 // This will produce a MEX file named 'kfit_2t5p_mex_omp', which you can call from MATLAB 
