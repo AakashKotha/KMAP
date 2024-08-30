@@ -139,7 +139,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_1t3p_mex.cpp kinlib.cpp -output kfit_1t3p
+     mex kfit_1t3p_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_1t3p
      ```
    - **Usage**:
      ```matlab
@@ -166,7 +166,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_1t3p_mex_omp.cpp kinlib.cpp -output kfit_1t3p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     mex kfit_1t3p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_1t3p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
      ```matlab
@@ -193,7 +193,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_2t5p_mex.cpp kinlib.cpp -output kfit_2t5p
+     mex kfit_2t5p_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_2t5p
      ```
    - **Usage**:
      ```matlab
@@ -220,7 +220,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_2t5p_mex_omp.cpp kinlib.cpp -output kfit_2t5p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     mex kfit_2t5p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_2t5p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
      ```matlab
@@ -247,7 +247,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_liver_mex_omp.cpp kinlib.cpp -output kfit_liver_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     mex kfit_liver_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_liver_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
      ```matlab
@@ -274,7 +274,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_srtm_mex.cpp kinlib.cpp -output kfit_srtm
+     mex kfit_srtm_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_srtm
      ```
    - **Usage**:
      ```matlab
@@ -301,7 +301,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_srtm_mex_omp.cpp kinlib.cpp -output kfit_srtm_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     mex kfit_srtm_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_srtm_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
      ```matlab
@@ -322,7 +322,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `s`: Jacobian matrix (if requested).
    - **Compilation Instruction**:
      ```matlab
-     mex ktac_1t3p_mex.cpp kinlib.cpp -output ktac_1t3p
+     mex ktac_1t3p_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output ktac_1t3p
      ```
    - **Usage**:
      ```matlab
@@ -343,7 +343,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `s`: Jacobian matrix (if requested).
    - **Compilation Instruction**:
      ```matlab
-     mex ktac_2t5p_mex.cpp kinlib.cpp -output ktac_2t5p
+     mex ktac_2t5p_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output ktac_2t5p
      ```
    - **Usage**:
      ```matlab
@@ -364,7 +364,7 @@ The usage command should be run within the MATLAB environment after the MEX file
       - `s`: Jacobian matrix (if requested).
     - **Compilation Instruction**:
       ```matlab
-      mex ktac_liver_mex.cpp kinlib.cpp -output ktac_liver
+      mex ktac_liver_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output ktac_liver
       ```
     - **Usage**:
       ```matlab
@@ -385,7 +385,7 @@ The usage command should be run within the MATLAB environment after the MEX file
       - `s`: Jacobian matrix (if requested).
     - **Compilation Instruction**:
       ```matlab
-      mex ktac_srtm_mex.cpp kinlib.cpp -output ktac_srtm
+      mex ktac_srtm_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output ktac_srtm
       ```
     - **Usage**:
       ```matlab
