@@ -9,7 +9,7 @@
 // kfit_2t5p(tac, w, scant, blood, wblood, dk, pinit, plb, pub, psens, maxit, td)
 //
 // Compilation Instruction:
-// mex kfit_2t5p_mex.cpp kinlib.cpp -output kfit_2t5p
+// mex kfit_2t5p_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_2t5p
 //
 // This will produce a MEX file named 'kfit_2t5p', which you can call from MATLAB 
 // as kfit_2t5p(...) with the same arguments as described above.

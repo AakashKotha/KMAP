@@ -9,7 +9,7 @@
 // ktac_1t3p(par, scant, blood, wblood, dk, td)
 //
 // Compilation Instruction:
-// mex ktac_1t3p_mex.cpp kinlib.cpp -output ktac_1t3p
+// mex ktac_1t3p_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output ktac_1t3p
 //
 // This will produce a MEX file named 'ktac_1t3p', which you can call from MATLAB 
 // as ktac_1t3p(...) with the same arguments as described above.

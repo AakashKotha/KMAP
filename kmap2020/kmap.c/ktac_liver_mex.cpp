@@ -9,7 +9,7 @@
 // ktac_liver(par, scant, blood, wblood, dk, td)
 //
 // Compilation Instruction:
-// mex ktac_liver_mex.cpp kinlib.cpp -output ktac_liver
+// mex ktac_liver_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output ktac_liver
 //
 // This will produce a MEX file named 'ktac_liver', which you can call from MATLAB 
 // as ktac_liver(...) with the same arguments as described above.

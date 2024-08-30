@@ -9,7 +9,7 @@
 // kfit_srtm(tac, w, scant, blood, wblood, dk, pinit, plb, pub, psens, maxit, td) 
 //
 // Compilation Instruction:
-// mex kfit_srtm_mex.cpp kinlib.cpp -output kfit_srtm
+// mex kfit_srtm_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_srtm
 //
 // This will produce a MEX file named 'kfit_srtm', which you can call from MATLAB 
 // as kfit_srtm(...) with the same arguments as described above.

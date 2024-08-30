@@ -11,7 +11,7 @@
 // kfit_liver(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
 //
 // Compilation Instruction:
-// mex kfit_liver_mex_omp.cpp kinlib.cpp -output kfit_liver CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+// mex kfit_liver_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_liver CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
 
 //
 // This will produce a MEX file named 'kfit_liver', which you can call from 

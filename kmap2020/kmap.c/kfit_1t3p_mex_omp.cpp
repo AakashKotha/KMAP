@@ -29,7 +29,7 @@
 // - c: Fitted curve.
 //
 // Compilation Instruction:
-// mex kfit_1t3p_mex_omp.cpp kinlib.cpp 
+// mex kfit_1t3p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp
 // CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
 //
 // This will produce a MEX file named 'kfit_1t3p_mex_omp', which you can call from MATLAB 

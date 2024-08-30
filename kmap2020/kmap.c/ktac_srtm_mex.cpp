@@ -10,7 +10,7 @@
 // ktac_srtm(par, scant, blood, wblood, dk, td)
 //
 // Compilation Instruction:
-// mex ktac_srtm_mex.cpp kinlib.cpp -output ktac_srtm
+// mex ktac_srtm_mex.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output ktac_srtm
 //
 // This will produce a MEX file named 'ktac_srtm', which you can call from MATLAB 
 // as ktac_srtm(...) with the same arguments as described above.
