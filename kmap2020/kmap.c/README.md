@@ -65,15 +65,18 @@ The KMAP (Kinetic Modeling Analysis Package) library provides a suite of tools f
      - **Other Utility Functions**:
        - `frame`: Computes the average activity within specified time frames.
        - `vecnorm2`, `vecnormw`: Helper functions for vector norm calculations.
+
 ### 3. **MEX Files for each of the models**
-
-
 
 ## MEX Files
 
 This directory contains several MEX files for performing kinetic modeling in MATLAB. Precompiled MEX binaries (`*.mexa64` files) are also included and can be used directly in MATLAB without recompilation, provided they are compatible with your system architecture.
 
 Each MEX file is accompanied by detailed instructions on its usage, input, output, and compilation. Please refer to the comments within each MEX source file (`*.cpp`) for precise information on how to work with these files.
+
+### Why OpenMP (OMP) is Used
+
+OpenMP (OMP) is employed in several MEX files to leverage parallel processing, significantly speeding up the fitting process when working with large datasets or multiple voxels. By default, the OMP-enabled MEX files are used for better performance. However, non-OMP versions are also available for users who prefer or require single-threaded execution.
 
 ### Compilation Instruction:
 
@@ -104,16 +107,16 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
    - **Compilation Instruction**:
-     ```
+     ```matlab
      mex kfit_1t3p_mex.cpp kinlib.cpp -output kfit_1t3p
      ```
    - **Usage**:
-     ```
+     ```matlab
      kfit_1t3p(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
      ```
 
-2. **kfit_2t5p_mex_omp.cpp**
-   - **Purpose**: Implements the fitting of a two-tissue kinetic model (2T5P) using the Levenberg-Marquardt algorithm with OpenMP for parallel processing in MATLAB.
+2. **kfit_1t3p_mex_omp.cpp**
+   - **Purpose**: Implements the fitting of a one-tissue kinetic model (1T3P) using the Levenberg-Marquardt algorithm with OpenMP for parallel processing in MATLAB.
    - **Inputs**:
      - `tac`: Time activity curve (TAC) data.
      - `w`: Weights for the TAC data.
@@ -131,12 +134,12 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
    - **Compilation Instruction**:
-     ```
-     mex kfit_2t5p_mex_omp.cpp kinlib.cpp kfit_test_omp.cpp -output kfit_2t5p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     ```matlab
+     mex kfit_1t3p_mex_omp.cpp kinlib.cpp kfit_test_omp.cpp -output kfit_1t3p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
-     ```
-     kfit_2t5p_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
+     ```matlab
+     kfit_1t3p_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
      ```
 
 3. **kfit_2t5p_mex.cpp**
@@ -158,15 +161,42 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
    - **Compilation Instruction**:
-     ```
+     ```matlab
      mex kfit_2t5p_mex.cpp kinlib.cpp -output kfit_2t5p
      ```
    - **Usage**:
-     ```
+     ```matlab
      kfit_2t5p(tac, w, scant, blood, wblood, dk, pinit, plb, pub, psens, maxit, td)
      ```
 
-4. **kfit_liver_mex_omp.cpp**
+4. **kfit_2t5p_mex_omp.cpp**
+   - **Purpose**: Implements the fitting of a two-tissue kinetic model (2T5P) using the Levenberg-Marquardt algorithm with OpenMP for parallel processing in MATLAB.
+   - **Inputs**:
+     - `tac`: Time activity curve (TAC) data.
+     - `w`: Weights for the TAC data.
+     - `scant`: Scan time data.
+     - `blood`: Blood data.
+     - `wblood`: Whole blood data.
+     - `dk`: Decay constant.
+     - `pinit`: Initial parameters for the model.
+     - `lb`: Lower bounds for the parameters.
+     - `ub`: Upper bounds for the parameters.
+     - `psens`: Sensitivity matrix for the parameters.
+     - `maxit`: Maximum number of iterations for the fitting algorithm.
+     - `td`: Time duration for the scan.
+   - **Outputs**: 
+     - `p`: Estimated parameters.
+     - `c`: Fitted curve.
+   - **Compilation Instruction**:
+     ```matlab
+     mex kfit_2t5p_mex_omp.cpp kinlib.cpp -output kfit_2t5p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     ```
+   - **Usage**:
+     ```matlab
+     kfit_2t5p_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
+     ```
+
+5. **kfit_liver_mex_omp.cpp**
    - **Purpose**: Implements the fitting of a liver kinetic model using the Levenberg-Marquardt algorithm with OpenMP parallelization in MATLAB.
    - **Inputs**:
      - `tac`: Time activity curve (TAC) data.
@@ -185,15 +215,15 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
    - **Compilation Instruction**:
-     ```
-     mex kfit_liver_mex_omp.cpp kinlib.cpp -output kfit_liver CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     ```matlab
+     mex kfit_liver_mex_omp.cpp kinlib.cpp -output kfit_liver_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
-     ```
-     kfit_liver(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
+     ```matlab
+     kfit_liver_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
      ```
 
-5. **kfit_srtm_mex.cpp**
+6. **kfit_srtm_mex.cpp**
    - **Purpose**: Implements the fitting of a Simplified Reference Tissue Model (SRTM) using the Levenberg-Marquardt algorithm in MATLAB.
    - **Inputs**:
      - `tac`: Time activity curve (TAC) data.
@@ -212,28 +242,42 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
    - **Compilation Instruction**:
-     ```
+     ```matlab
      mex kfit_srtm_mex.cpp kinlib.cpp -output kfit_srtm
      ```
    - **Usage**:
-     ```
-     kfit_srtm(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
+     ```matlab
+     kfit_srtm(tac, w, scant, blood, wblood, dk, pinit, plb, pub, psens, maxit, td)
      ```
 
-6. **kfit_test_omp.cpp**
-   - **Purpose**: This file is a test for OpenMP parallelization in a MEX function. It demonstrates the use of OpenMP to run parallel code.
-   - **Inputs**: Varies depending on the model being tested.
-   - **Outputs**: Performance metrics, parameter estimates, and fitted curves.
+7. **kfit_srtm_mex_omp.cpp**
+   - **Purpose**: Implements the fitting of a Simplified Reference Tissue Model (SRTM) using the Levenberg-Marquardt algorithm with OpenMP for parallel processing in MATLAB.
+   - **Inputs**:
+     - `tac`: Time activity curve (TAC) data.
+     - `w`: Weights for the TAC data.
+     - `scant`: Scan time data.
+     - `blood`: Blood data.
+     - `wblood`: Whole blood data.
+     - `dk`: Decay constant.
+     - `pinit`: Initial parameters for the model.
+     - `lb`: Lower bounds for the parameters.
+     - `ub`: Upper bounds for the parameters.
+     - `psens`: Sensitivity matrix for the parameters.
+     - `maxit`: Maximum number of iterations for the fitting algorithm.
+     - `td`: Time duration for the scan.
+   - **Outputs**: 
+     - `p`: Estimated parameters.
+     - `c`: Fitted curve.
    - **Compilation Instruction**:
-     ```
-     mex kfit_test_omp.cpp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp" -output kfit_test_omp
+     ```matlab
+     mex kfit_srtm_mex_omp.cpp kinlib.cpp -output kfit_srtm_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
-     ```
-     kfit_test_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
+     ```matlab
+     kfit_srtm_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
      ```
 
-7. **ktac_1t3p_mex.cpp**
+8. **ktac_1t3p_mex.cpp**
    - **Purpose**: Implements the computation of the time activity curve (TAC) and its Jacobian for a one-tissue kinetic model (1T3P) in MATLAB.
    - **Inputs**:
      - `par`: Model parameters.
@@ -246,15 +290,15 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Computed time activity curve (TAC).
      - `s`: Jacobian matrix (if requested).
    - **Compilation Instruction**:
-     ```
+     ```matlab
      mex ktac_1t3p_mex.cpp kinlib.cpp -output ktac_1t3p
      ```
    - **Usage**:
-     ```
+     ```matlab
      ktac_1t3p(par, scant, blood, wblood, dk, td)
      ```
 
-8. **ktac_2t5p_mex.cpp**
+9. **ktac_2t5p_mex.cpp**
    - **Purpose**: Implements the computation of the time activity curve (TAC) and its Jacobian for a two-tissue kinetic model (2T5P) in MATLAB.
    - **Inputs**:
      - `par`: Model parameters.
@@ -267,36 +311,36 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Computed time activity curve (TAC).
      - `s`: Jacobian matrix (if requested).
    - **Compilation Instruction**:
-     ```
+     ```matlab
      mex ktac_2t5p_mex.cpp kinlib.cpp -output ktac_2t5p
      ```
    - **Usage**:
-     ```
+     ```matlab
      ktac_2t5p(par, scant, blood, wblood, dk, td)
      ```
 
-9. **ktac_liver_mex.cpp**
-   - **Purpose**: Implements the computation of the time activity curve (TAC) and its Jacobian for a liver kinetic model in MATLAB.
-   - **Inputs**:
-     - `par`: Model parameters.
-     - `scant`: Scan time data.
-     - `blood`: Blood data.
-     - `wblood`: Whole blood data.
-     - `dk`: Decay constant.
-     - `td`: Time duration for the scan.
-   - **Outputs**: 
-     - `c`: Computed time activity curve (TAC).
-     - `s`: Jacobian matrix (if requested).
-   - **Compilation Instruction**:
-     ```
-     mex ktac_liver_mex.cpp kinlib.cpp -output ktac_liver
-     ```
-   - **Usage**:
-     ```
-     ktac_liver(par, scant, blood, wblood, dk, td)
-     ```
+10. **ktac_liver_mex.cpp**
+    - **Purpose**: Implements the computation of the time activity curve (TAC) and its Jacobian for a liver kinetic model in MATLAB.
+    - **Inputs**:
+      - `par`: Model parameters.
+      - `scant`: Scan time data.
+      - `blood`: Blood data.
+      - `wblood`: Whole blood data.
+      - `dk`: Decay constant.
+      - `td`: Time duration for the scan.
+    - **Outputs**: 
+      - `c`: Computed time activity curve (TAC).
+      - `s`: Jacobian matrix (if requested).
+    - **Compilation Instruction**:
+      ```matlab
+      mex ktac_liver_mex.cpp kinlib.cpp -output ktac_liver
+      ```
+    - **Usage**:
+      ```matlab
+      ktac_liver(par, scant, blood, wblood, dk, td)
+      ```
 
-10. **ktac_srtm_mex.cpp**
+11. **ktac_srtm_mex.cpp**
     - **Purpose**: Implements the computation of the time activity curve (TAC) and its Jacobian for a Simplified Reference Tissue Model (SRTM) in MATLAB.
     - **Inputs**:
       - `par`: Model parameters.
@@ -309,11 +353,10 @@ The usage command should be run within the MATLAB environment after the MEX file
       - `c`: Computed time activity curve (TAC).
       - `s`: Jacobian matrix (if requested).
     - **Compilation Instruction**:
-      ```
+      ```matlab
       mex ktac_srtm_mex.cpp kinlib.cpp -output ktac_srtm
       ```
     - **Usage**:
-      ```
+      ```matlab
       ktac_srtm(par, scant, blood, wblood, dk, td)
       ```
-
