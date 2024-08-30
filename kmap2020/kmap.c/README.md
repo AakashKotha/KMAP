@@ -34,6 +34,37 @@ The KMAP (Kinetic Modeling Analysis Package) library provides a suite of tools f
    - **Description**: A specialized model accounting for the dynamics in liver tissue, where both plasma and whole blood compartments are considered.
    - **Parameters**: \( K_1 \), \( k_2 \), \( k_3 \), \( k_4 \), \( K_a \), \( f_a \) (fractional arterial blood), \( V_b \).
 
+### Optimization Methods Used
+
+The KMAP library employs several advanced optimization techniques to accurately fit kinetic models to time-activity curve (TAC) data derived from PET imaging.
+
+1. **Levenberg-Marquardt Algorithm**:
+   - **Purpose**: The Levenberg-Marquardt (LM) algorithm is a widely used method for solving nonlinear least squares problems, particularly in the context of curve fitting. In kinetic modeling, it plays a crucial role in adjusting the model parameters so that the computed TAC closely matches the observed data. The algorithm effectively bridges the gap between the steepest descent method and the Gauss-Newton algorithm, providing a balanced approach that is both robust and efficient.
+   
+   - **How It Works**: 
+     - The LM algorithm iteratively updates the parameters by minimizing the sum of the squared differences between the observed and model-predicted TAC values. It combines the advantages of two methods: 
+       - **Gradient Descent**: Useful when the parameters are far from their optimal values, where it uses the gradient of the cost function to guide the search direction.
+       - **Gauss-Newton**: More effective when the parameters are close to the optimal values, using a second-order approximation of the cost function to make more precise adjustments.
+     - The LM algorithm introduces a damping factor that adjusts the step size based on the current position in the parameter space. When far from the minimum, the algorithm behaves more like a gradient descent (larger damping), and as it approaches the minimum, it shifts towards the Gauss-Newton method (smaller damping).
+
+   - **Implementation**: 
+     - In `kinlib.cpp`, the LM algorithm is implemented through the `kmap_levmar` function. This function takes in the initial parameter estimates and iteratively refines them by minimizing the residuals (differences between observed and predicted TACs). 
+     - To handle the complexity of multiple parameters, the algorithm also uses a bounded coordinate descent method, which ensures that parameter updates stay within specified bounds, improving the stability and reliability of the optimization process.
+     - The `kmap_levmar` function also incorporates mechanisms to dynamically adjust the damping factor, improving convergence speed and accuracy. The function iteratively recalculates the Jacobian matrix, which represents the sensitivity of the TAC to each model parameter, ensuring that the parameter updates are optimally directed.
+
+2. **Bounded Coordinate Descent**:
+   - **Purpose**: This method is employed to optimize individual parameters while keeping the others fixed. It is particularly effective in situations where the parameters are subject to specific constraints (bounds). The method complements the LM algorithm by refining the parameter estimates within the allowable range.
+   
+   - **Implementation**: In `kinlib.cpp`, the `BoundQuadCD` function performs this optimization, iterating over each parameter to minimize the cost function under the constraints of the parameter bounds. This ensures that the optimization process remains stable and that the parameter estimates are physically meaningful.
+
+3. **Convolution Operations**:
+   - **Purpose**: Convolution with exponential functions is essential in kinetic modeling to simulate the tracer's behavior as it transitions between different biological compartments over time.
+   
+   - **Implementation**: The `kconv_exp` function in `kinlib.cpp` efficiently handles these convolutions, which are integral to computing the TACs and their sensitivities. This operation directly influences the accuracy of the model fitting process, as it underpins the evaluation of how well the model's predictions align with the observed data.
+
+These optimization techniques are integral to the KMAP library's ability to accurately model biological processes observed in PET imaging. By employing a combination of the Levenberg-Marquardt algorithm, bounded coordinate descent, and convolution operations, the library ensures robust and reliable parameter estimation, facilitating meaningful insights into tracer kinetics.
+
+
 ## Repository Structure
 
 ### 1. **Header File: `kinlib.h`**
