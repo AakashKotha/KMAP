@@ -48,22 +48,21 @@ The KMAP library employs several advanced optimization techniques to accurately 
      - The LM algorithm introduces a damping factor that adjusts the step size based on the current position in the parameter space. When far from the minimum, the algorithm behaves more like a gradient descent (larger damping), and as it approaches the minimum, it shifts towards the Gauss-Newton method (smaller damping).
 
    - **Implementation**: 
-     - In `kinlib.cpp`, the LM algorithm is implemented through the `kmap_levmar` function. This function takes in the initial parameter estimates and iteratively refines them by minimizing the residuals (differences between observed and predicted TACs). 
+     - In `kinlib_optimization.cpp`, the LM algorithm is implemented through the `kmap_levmar` function. This function takes in the initial parameter estimates and iteratively refines them by minimizing the residuals (differences between observed and predicted TACs). 
      - To handle the complexity of multiple parameters, the algorithm also uses a bounded coordinate descent method, which ensures that parameter updates stay within specified bounds, improving the stability and reliability of the optimization process.
      - The `kmap_levmar` function also incorporates mechanisms to dynamically adjust the damping factor, improving convergence speed and accuracy. The function iteratively recalculates the Jacobian matrix, which represents the sensitivity of the TAC to each model parameter, ensuring that the parameter updates are optimally directed.
 
 2. **Bounded Coordinate Descent**:
    - **Purpose**: This method is employed to optimize individual parameters while keeping the others fixed. It is particularly effective in situations where the parameters are subject to specific constraints (bounds). The method complements the LM algorithm by refining the parameter estimates within the allowable range.
    
-   - **Implementation**: In `kinlib.cpp`, the `BoundQuadCD` function performs this optimization, iterating over each parameter to minimize the cost function under the constraints of the parameter bounds. This ensures that the optimization process remains stable and that the parameter estimates are physically meaningful.
+   - **Implementation**: In `kinlib_optimization.cpp`, the `BoundQuadCD` function performs this optimization, iterating over each parameter to minimize the cost function under the constraints of the parameter bounds. This ensures that the optimization process remains stable and that the parameter estimates are physically meaningful.
 
 3. **Convolution Operations**:
    - **Purpose**: Convolution with exponential functions is essential in kinetic modeling to simulate the tracer's behavior as it transitions between different biological compartments over time.
    
-   - **Implementation**: The `kconv_exp` function in `kinlib.cpp` efficiently handles these convolutions, which are integral to computing the TACs and their sensitivities. This operation directly influences the accuracy of the model fitting process, as it underpins the evaluation of how well the model's predictions align with the observed data.
+   - **Implementation**: The `kconv_exp` function in `kinlib_common.cpp` efficiently handles these convolutions, which are integral to computing the TACs and their sensitivities. This operation directly influences the accuracy of the model fitting process, as it underpins the evaluation of how well the model's predictions align with the observed data.
 
 These optimization techniques are integral to the KMAP library's ability to accurately model biological processes observed in PET imaging. By employing a combination of the Levenberg-Marquardt algorithm, bounded coordinate descent, and convolution operations, the library ensures robust and reliable parameter estimation, facilitating meaningful insights into tracer kinetics.
-
 
 ## Repository Structure
 
@@ -76,26 +75,36 @@ These optimization techniques are integral to the KMAP library's ability to accu
      - `kconv_exp`: Declares the function for exponential convolution operations.
      - `kmap_levmar`: Declares the Levenberg-Marquardt algorithm for non-linear least squares optimization.
 
-### 2. **Source File: `kinlib.cpp`**
-   - **Purpose**: Contains the implementations of the functions declared in `kinlib.h`.
-   - **Key Functions**:
-     - **TAC Evaluation**:
-       - `tac_eval`: Implements the computation of TACs for the given model parameters.
-       - `kconv_1t3p_tac`, `kconv_2t5p_tac`, `kconv_srtm_tac`, `kconv_liver_tac`: Specialized TAC computation functions for the respective models.
-     
-     - **Jacobian Calculation**:
-       - `jac_eval`: Implements the computation of the Jacobian matrix.
-       - `kconv_1t3p_jac`, `kconv_2t5p_jac`, `kconv_srtm_jac`, `kconv_liver_jac`: Specialized Jacobian calculation functions for the respective models.
-     
-     - **Convolution Operations**:
-       - `kconv_exp`: Performs the convolution of input functions with an exponential decay, a key operation in kinetic modeling.
-     
-     - **Optimization**:
-       - `kmap_levmar`: Implements the Levenberg-Marquardt algorithm to fit the kinetic model to the TAC data by minimizing the difference between observed and modeled TACs.
-     
-     - **Other Utility Functions**:
-       - `frame`: Computes the average activity within specified time frames.
-       - `vecnorm2`, `vecnormw`: Helper functions for vector norm calculations.
+### 2. **Source Files**:
+   - **`kinlib_models.cpp`**: 
+     - **Purpose**: Contains the implementations of TAC and Jacobian calculations for the various kinetic models.
+     - **Key Functions**:
+       - **TAC Evaluation**:
+         - `tac_eval`: Implements the computation of TACs for the given model parameters.
+         - `kconv_1t3p_tac`, `kconv_2t5p_tac`, `kconv_srtm_tac`, `kconv_liver_tac`: Specialized TAC computation functions for the respective models.
+       - **Jacobian Calculation**:
+         - `jac_eval`: Implements the computation of the Jacobian matrix.
+         - `kconv_1t3p_jac`, `kconv_2t5p_jac`, `kconv_srtm_jac`, `kconv_liver_jac`: Specialized Jacobian calculation functions for the respective models.
+
+   - **`kinlib_optimization.cpp`**:
+     - **Purpose**: Contains the implementations of optimization algorithms.
+     - **Key Functions**:
+       - **Optimization**:
+         - `kmap_levmar`: Implements the Levenberg-Marquardt algorithm to fit the kinetic model to the TAC data by minimizing the difference between observed and modeled TACs.
+         - `BoundQuadCD`: Implements the bounded coordinate descent method for parameter optimization under constraints.
+         - `lema_gsn`: Implements the Levenberg-Marquardt algorithm with additional constraints.
+
+   - **`kinlib_common.cpp`**:
+     - **Purpose**: Contains common functions used across different models and optimizations.
+     - **Key Functions**:
+       - **Convolution Operations**:
+         - `kconv_exp`: Performs the convolution of input functions with an exponential decay, a key operation in kinetic modeling.
+       - **Other Utility Functions**:
+         - `frame`: Computes the average activity within specified time frames.
+         - `vecnorm2`, `vecnormw`: Helper functions for vector norm calculations.
+       - **Parameter Handling**:
+         - `setkin`, `getkin`: Functions for handling sensitive parameters during optimization.  
+       
 
 ### 3. **MEX Files for each of the models**
 
