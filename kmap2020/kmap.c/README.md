@@ -135,7 +135,7 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `c`: Fitted curve.
    - **Compilation Instruction**:
      ```matlab
-     mex kfit_1t3p_mex_omp.cpp kinlib.cpp kfit_test_omp.cpp -output kfit_1t3p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+     mex kfit_1t3p_mex_omp.cpp kinlib.cpp -output kfit_1t3p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
      ```
    - **Usage**:
      ```matlab
