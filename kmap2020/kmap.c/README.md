@@ -173,10 +173,16 @@ The usage command should be run within the MATLAB environment after the MEX file
    - **Outputs**: 
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
-   - **Compilation Instruction**:
-     ```matlab
-     mex kfit_1t3p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_1t3p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
-     ```
+
+   - **Compilation Instructions**:
+     - **Windows**:
+       ```matlab
+       mex kfit_1t3p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_1t3p_mex_omp CXXFLAGS="$CXXFLAGS -fopenmp" LDFLAGS="$LDFLAGS -fopenmp"
+       ```
+     - **Linux**:
+       ```matlab
+       mex kfit_1t3p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_1t3p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+       ```
    - **Usage**:
      ```matlab
      kfit_1t3p_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
@@ -227,10 +233,16 @@ The usage command should be run within the MATLAB environment after the MEX file
    - **Outputs**: 
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
-   - **Compilation Instruction**:
-     ```matlab
-     mex kfit_2t5p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_2t5p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
-     ```
+   
+   - **Compilation Instructions**:
+     - **Windows**:
+       ```matlab
+       mex kfit_2t5p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_2t5p_mex_omp CXXFLAGS="$CXXFLAGS -fopenmp" LDFLAGS="$LDFLAGS -fopenmp"
+       ```
+     - **Linux**:
+       ```matlab
+       mex kfit_2t5p_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_2t5p_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+       ```
    - **Usage**:
      ```matlab
      kfit_2t5p_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
@@ -254,10 +266,16 @@ The usage command should be run within the MATLAB environment after the MEX file
    - **Outputs**: 
      - `p`: Estimated parameters.
      - `c`: Fitted curve.
-   - **Compilation Instruction**:
-     ```matlab
-     mex kfit_liver_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_liver_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
-     ```
+
+   - **Compilation Instructions**:
+     - **Windows**:
+       ```matlab
+       mex kfit_liver_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_liver_mex_omp CXXFLAGS="$CXXFLAGS -fopenmp" LDFLAGS="$LDFLAGS -fopenmp"
+       ```
+     - **Linux**:
+       ```matlab
+       mex kfit_liver_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_liver_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+       ```
    - **Usage**:
      ```matlab
      kfit_liver_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
@@ -305,17 +323,16 @@ The usage command should be run within the MATLAB environment after the MEX file
      - `psens`: Sensitivity matrix for the parameters.
      - `maxit`: Maximum number of iterations for the fitting algorithm.
      - `td`: Time duration for the scan.
-   - **Outputs**: 
-     - `p`: Estimated parameters.
-     - `c`: Fitted curve.
-   - **Compilation Instruction**:
-     ```matlab
-     mex kfit_srtm_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_srtm_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
-     ```
-   - **Usage**:
-     ```matlab
-     kfit_srtm_mex_omp(tac, w, scant, blood, wblood, dk, pinit, lb, ub, psens, maxit, td)
-     ```
+
+   - **Compilation Instructions**:
+     - **Windows**:
+       ```matlab
+       mex kfit_srtm_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_srtm_mex_omp CXXFLAGS="$CXXFLAGS -fopenmp" LDFLAGS="$LDFLAGS -fopenmp"
+       ```
+     - **Linux**:
+       ```matlab
+       mex kfit_srtm_mex_omp.cpp kinlib_models.cpp kinlib_optimization.cpp kinlib_common.cpp -output kfit_srtm_mex_omp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp"
+       ```
 
 8. **ktac_1t3p_mex.cpp**
    - **Purpose**: Implements the computation of the time activity curve (TAC) and its Jacobian for a one-tissue kinetic model (1T3P) in MATLAB.
@@ -400,3 +417,4 @@ The usage command should be run within the MATLAB environment after the MEX file
       ```matlab
       ktac_srtm(par, scant, blood, wblood, dk, td)
       ```
+
