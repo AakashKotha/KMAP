@@ -42,7 +42,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     double dk;
     double *pinit;
     int num_frm, num_vox, num_par, np, nw;
-    int psens[5];
+    int psens[4];
     double *temp;
     int maxit; 
     double *p, *c;
